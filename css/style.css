@@ -119,21 +119,15 @@ h2 {
 	padding-bottom: 0.5em;
 }
 
-input {
-	width: 300px;
-	height: 50px;
-	display: block;
-	padding: 0.8em 0;
-	margin: 0.8em auto 0;
-	background: #50597b;
-	color: #fff;
-	border: solid 1px #1f253d;
-	-webkit-border-radius: 4px;
-	-moz-border-radius: 4px;
-	border-radius: 4px;
-}
-
-input.button {
+a.button {
+  width: 300px;
+  height: 50px;
+  display: block;
+  margin: 0.8em auto 0;
+  border: solid 1px #1f253d;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
 	background: #1F253D;
 	color: #95a5a6;
 	font-size: 2em;
@@ -145,7 +139,7 @@ input.button {
 	transition: background 1s ease-in-out;
 }
 
-input.button:hover {
+a.button:hover {
 	background: #e64c65;
 	color: #fff;
 	-webkit-transition: background 1s ease-in-out;
@@ -154,4 +148,9 @@ input.button:hover {
 	-o-transition: background 1s ease-in-out;
 	transition: background 1s ease-in-out;
 	cursor: pointer;
+}
+
+label {
+  display: block;
+  text-align: left;
 }
