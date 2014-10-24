@@ -24,6 +24,38 @@ $(document).ready(function(){
 
   var quiz = new Quiz();
 
+  var currentQuestion = quiz.questions[quiz.currentQuestion];
+
+  function nextQuestion() {
+    $("label").remove();
+    $('p').text(currentQuestion.question);
+
+    for (var i in currentQuestion.choices) {
+      var label = $("<label>").addClass("optionLabel").text(currentQuestion.choices[i]);
+      var option = $("<input>").addClass("radioInput").attr("type", "radio").attr("name", "option").attr("value", currentQuestion.choices[i]);
+      label.prepend(option);
+      $(".quiz").append(label);
+    }
+  }
+
+  $("#startQuiz").click(function(){
+    this.remove();
+    var submitButton = $("<a>").attr("id", "submitAnswer").addClass("button").text("Submit Answer");
+    $(".quiz").append(submitButton);
+    nextQuestion();
+
+    $("#submitAnswer").on("click", function() {
+      var checked = $(":checked");
+      var choiceIndex = $(":radio").index(checked);
+      if (currentQuestion.check(choiceIndex)) {
+        quiz.currentQuestion++;
+        nextQuestion();
+      } else {
+        console.log(false);
+      }
+    });
+  });
+
 
 
 });
