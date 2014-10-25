@@ -21,7 +21,7 @@ $(document).ready(function(){
     this.currentQuestion = 0;
     this.initQuestion = function() {
       $("label").remove();
-      if (quiz.questions[quiz.currentQuestion] === quiz.questions.length) {
+      if (quiz.currentQuestion === quiz.questions.length) {
         return;
       } else {
         $("h2").text("Question #" + (quiz.currentQuestion + 1));
