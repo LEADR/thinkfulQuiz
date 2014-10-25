@@ -53,8 +53,9 @@ $(document).ready(function(){
         $("#feedback").text("Correct!").animate({color: "#FFFFFF"}, 1000, function() {
           if (quiz.currentQuestion >= quiz.questions.length) {
             $("#feedback").text("You win! Great job!");
+          } else {
+            $("#feedback").text("Question #" + (quiz.currentQuestion + 1));
           }
-          $("#feedback").text("Question #" + (quiz.currentQuestion + 1));
         });
       } else {
         $("#feedback").text("Sorry, nope. Try again!").animate({color: "#FFFFFF"}, 1000, function() {
