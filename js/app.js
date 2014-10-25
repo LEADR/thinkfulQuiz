@@ -61,6 +61,7 @@ $(document).ready(function(){
           $("#feedback").text("Question #" + (quiz.currentQuestion + 1));
         });
       }
+      console.log(quiz.currentQuestion);
       if (quiz.currentQuestion >= quiz.questions.length) {
         $("#feedback").text("You win! Great job!");
         $("p").text("");
