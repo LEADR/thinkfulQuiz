@@ -18,37 +18,33 @@ $(document).ready(function(){
       new Question("What is the other, lesser known name given to the neighborhood known as the Castro District?", ["Noe Valley", "Eureka Valley", "Mission District", "Northern Haight Ashbury"], 1),
       new Question("Which geographical feature marks the highest elevation in San Francisco?", ["Sutro Tower", "Twin Peaks", "Muir Woods", "Mount Davidson"], 3)
     ];
-
     this.currentQuestion = 0;
+    this.initQuestion = function() {
+      $("label").remove();
+      $('p').text(quiz.questions[quiz.currentQuestion].question);
+      for (var i in this.questions[this.currentQuestion].choices) {
+        var label = $("<label>").addClass("optionLabel").text(quiz.questions[quiz.currentQuestion].choices[i]);
+        var option = $("<input>").addClass("radioInput").attr("type", "radio").attr("name", "option").attr("value", quiz.questions[quiz.currentQuestion].choices[i]);
+        label.prepend(option);
+        $(".quiz").append(label);
+      }
+    };
   }
 
   var quiz = new Quiz();
 
-  function nextQuestion() {
-    $("label").remove();
-    $('p').text(quiz.questions[quiz.currentQuestion].question);
-
-    for (var i in quiz.questions[quiz.currentQuestion].choices) {
-      var label = $("<label>").addClass("optionLabel").text(quiz.questions[quiz.currentQuestion].choices[i]);
-      var option = $("<input>").addClass("radioInput").attr("type", "radio").attr("name", "option").attr("value", quiz.questions[quiz.currentQuestion].choices[i]);
-      label.prepend(option);
-      $(".quiz").append(label);
-    }
-  }
-
-  $("#startQuiz").click(function(){
+  $("#startQuiz").click(function() {
     this.remove();
     var submitButton = $("<a>").attr("id", "submitAnswer").addClass("button").text("Submit Answer");
     $(".quiz").append(submitButton);
-    nextQuestion();
+    quiz.initQuestion();
 
     $("#submitAnswer").on("click", function() {
       var checked = $(":checked");
       var choiceIndex = $(":radio").index(checked);
       if (quiz.questions[quiz.currentQuestion].check(choiceIndex)) {
-        console.log(quiz.currentQuestion);
         quiz.currentQuestion++;
-        nextQuestion();
+        quiz.initQuestion();
       } else {
         $("h2").val("Sorry, nope. Try again!");
       }
