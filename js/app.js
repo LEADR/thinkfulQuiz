@@ -21,12 +21,16 @@ $(document).ready(function(){
     this.currentQuestion = 0;
     this.initQuestion = function() {
       $("label").remove();
-      $('p').text(quiz.questions[quiz.currentQuestion].question);
+      if (quiz.questions[quiz.currentQuestion] === undefined) {
+        return;
+      } else {
+        $("h2").text("Question #" + (quiz.currentQuestion + 1));
+        $('p').text(quiz.questions[quiz.currentQuestion].question);
       for (var i in this.questions[this.currentQuestion].choices) {
         var label = $("<label>").addClass("optionLabel").text(quiz.questions[quiz.currentQuestion].choices[i]);
         var option = $("<input>").addClass("radioInput").attr("type", "radio").attr("name", "option").attr("value", quiz.questions[quiz.currentQuestion].choices[i]);
         label.prepend(option);
-        $(".quiz").append(label);
+        $(".quiz").append(label);}
       }
     };
   }
@@ -45,9 +49,26 @@ $(document).ready(function(){
       if (quiz.questions[quiz.currentQuestion].check(choiceIndex)) {
         quiz.currentQuestion++;
         quiz.initQuestion();
+        $("h2").text("Correct!");
       } else {
-        $("h2").val("Sorry, nope. Try again!");
+        $("h2").text("Sorry, nope. Try again!");
+      }
+      $("h2").animate({color: "#FFFFFF"}, 1000, function() {
+        $("h2").text("Question #" + (quiz.currentQuestion + 1));
+      });
+      if (quiz.currentQuestion >= quiz.questions.length) {
+        $("#submitAnswer").text("Try again?").attr("id", "tryAgain");
+        $("#instructions").text("You win! Great job!");
+        $("#tryAgain").click(function() {
+          quiz = new Quix();
+          quiz.currentQuestion = 0;
+          this.remove();
+          var submitButton = $("<a>").attr("id", "submitAnswer").addClass("button").text("Submit Answer");
+          $(".quiz").append(submitButton);
+          quiz.initQuestion();
+        });
       }
     });
   });
+
 });
