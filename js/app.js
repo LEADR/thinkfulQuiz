@@ -24,15 +24,13 @@ $(document).ready(function(){
 
   var quiz = new Quiz();
 
-  var currentQuestion = quiz.questions[quiz.currentQuestion];
-
   function nextQuestion() {
     $("label").remove();
-    $('p').text(currentQuestion.question);
+    $('p').text(quiz.questions[quiz.currentQuestion].question);
 
-    for (var i in currentQuestion.choices) {
-      var label = $("<label>").addClass("optionLabel").text(currentQuestion.choices[i]);
-      var option = $("<input>").addClass("radioInput").attr("type", "radio").attr("name", "option").attr("value", currentQuestion.choices[i]);
+    for (var i in quiz.questions[quiz.currentQuestion].choices) {
+      var label = $("<label>").addClass("optionLabel").text(quiz.questions[quiz.currentQuestion].choices[i]);
+      var option = $("<input>").addClass("radioInput").attr("type", "radio").attr("name", "option").attr("value", quiz.questions[quiz.currentQuestion].choices[i]);
       label.prepend(option);
       $(".quiz").append(label);
     }
@@ -47,15 +45,13 @@ $(document).ready(function(){
     $("#submitAnswer").on("click", function() {
       var checked = $(":checked");
       var choiceIndex = $(":radio").index(checked);
-      if (currentQuestion.check(choiceIndex)) {
+      if (quiz.questions[quiz.currentQuestion].check(choiceIndex)) {
+        console.log(quiz.currentQuestion);
         quiz.currentQuestion++;
         nextQuestion();
       } else {
-        console.log(false);
+        $("h2").val("Sorry, nope. Try again!");
       }
     });
   });
-
-
-
 });
