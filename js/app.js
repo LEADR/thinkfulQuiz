@@ -21,7 +21,7 @@ $(document).ready(function(){
     this.currentQuestion = 0;
     this.initQuestion = function() {
       $("label").remove();
-      if (quiz.currentQuestion === quiz.questions.length) {
+      if (quiz.questions[quiz.currentQuestion] === undefined) {
         return;
       } else {
         $("h2").text("Question #" + (quiz.currentQuestion + 1));
@@ -61,7 +61,6 @@ $(document).ready(function(){
           $("#feedback").text("Question #" + (quiz.currentQuestion + 1));
         });
       }
-      console.log(quiz.currentQuestion);
       if (quiz.currentQuestion >= quiz.questions.length) {
         $("#feedback").text("You win! Great job!");
         $("p").text("");
