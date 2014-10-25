@@ -21,16 +21,17 @@ $(document).ready(function(){
     this.currentQuestion = 0;
     this.initQuestion = function() {
       $("label").remove();
-      if (quiz.questions[quiz.currentQuestion] === undefined) {
+      if (quiz.questions[quiz.currentQuestion] === quiz.questions.length) {
         return;
       } else {
         $("h2").text("Question #" + (quiz.currentQuestion + 1));
         $('p').text(quiz.questions[quiz.currentQuestion].question);
-      for (var i in this.questions[this.currentQuestion].choices) {
-        var label = $("<label>").addClass("optionLabel").text(quiz.questions[quiz.currentQuestion].choices[i]);
-        var option = $("<input>").addClass("radioInput").attr("type", "radio").attr("name", "option").attr("value", quiz.questions[quiz.currentQuestion].choices[i]);
-        label.prepend(option);
-        $(".quiz").append(label);}
+        for (var i in this.questions[this.currentQuestion].choices) {
+          var label = $("<label>").addClass("optionLabel").text(quiz.questions[quiz.currentQuestion].choices[i]);
+          var option = $("<input>").addClass("radioInput").attr("type", "radio").attr("name", "option").attr("value", quiz.questions[quiz.currentQuestion].choices[i]);
+          label.prepend(option);
+          $(".quiz").append(label);
+        }
       }
     };
   }
@@ -43,32 +44,38 @@ $(document).ready(function(){
     $(".quiz").append(submitButton);
     quiz.initQuestion();
 
-    $("#submitAnswer").on("click", function() {
+    function checkSubmission() {
       var checked = $(":checked");
       var choiceIndex = $(":radio").index(checked);
       if (quiz.questions[quiz.currentQuestion].check(choiceIndex)) {
         quiz.currentQuestion++;
         quiz.initQuestion();
-        $("h2").text("Correct!");
+        $("#feedback").text("Correct!").animate({color: "#FFFFFF"}, 1000, function() {
+          if (quiz.currentQuestion >= quiz.questions.length) {
+            $("#feedback").text("You win! Great job!");
+          }
+          $("#feedback").text("Question #" + (quiz.currentQuestion + 1));
+        });
       } else {
-        $("h2").text("Sorry, nope. Try again!");
+        $("#feedback").text("Sorry, nope. Try again!").animate({color: "#FFFFFF"}, 1000, function() {
+          $("#feedback").text("Question #" + (quiz.currentQuestion + 1));
+        });
       }
-      $("h2").animate({color: "#FFFFFF"}, 1000, function() {
-        $("h2").text("Question #" + (quiz.currentQuestion + 1));
-      });
       if (quiz.currentQuestion >= quiz.questions.length) {
-        $("#submitAnswer").text("Try again?").attr("id", "tryAgain");
-        $("#instructions").text("You win! Great job!");
+        $("#feedback").text("You win! Great job!");
+        $("p").text("");
+        $("#submitAnswer").off().text("Try again?").attr("id", "tryAgain");
         $("#tryAgain").click(function() {
-          quiz = new Quix();
+          quiz = new Quiz();
           quiz.currentQuestion = 0;
           this.remove();
           var submitButton = $("<a>").attr("id", "submitAnswer").addClass("button").text("Submit Answer");
           $(".quiz").append(submitButton);
+          $("#submitAnswer").click(checkSubmission);
           quiz.initQuestion();
         });
       }
-    });
+    }
+    $("#submitAnswer").click(checkSubmission);
   });
-
 });
